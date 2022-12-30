@@ -1,6 +1,7 @@
+from config_youtube import YouTubeToMp3
 from urllib.request import urlopen
 import tkinter as tk
-from tkinter import Label, ttk
+from tkinter import Label, StringVar, ttk
 LARGEFONT = ("Verdana", 35)
 
 
@@ -15,7 +16,7 @@ class tkinterApp(tk.Tk):
     def __init__(self, *args, **kwargs):
 
         tk.Tk.__init__(self, *args, **kwargs)
-        self.geometry('350x450+500+500')
+        self.geometry('550x450+500+500')
 
         container = tk.Frame(self)
         container.pack(side="top", fill="both", expand=True)
@@ -63,7 +64,7 @@ class Tela_inicial(tk.Frame):
         # usando o Label para exibir um texto
         self.texto_informativo = ttk.Label(self,
                                            text="Baixe suas musicas favoritas",
-                                           font=("Courier 22 bold"))
+                                           font=("Courier 22 bold"), justify="center")
         self.texto_informativo.grid(column=0, row=0)
 
         self.botao_procurar = ttk.Button(self, text="Procurar Músicas",
@@ -80,6 +81,7 @@ class Tela_baixar_musicas(tk.Frame):
 
     Args:
         tk (_type_): _description_
+
     """
 
     def __init__(self, parent, controller):
@@ -94,16 +96,27 @@ class Tela_baixar_musicas(tk.Frame):
         # definindo o titulo da janela
         # self.title("Download")
         label = ttk.Label(
-            self, text="Cole o link do youtube", font=LARGEFONT)
+            self, text="Cole o link do youtube", font=LARGEFONT, justify="center")
         label.grid(row=0, column=0, padx=10, pady=10)
 
         # caixa de pesquisa
-        self.texto_pesquisa = ttk.Entry(self, width=40)
+        link = StringVar()
+        self.texto_pesquisa = ttk.Entry(self, width=40, textvariable=link)
+
         self.texto_pesquisa.focus_set()
         self.texto_pesquisa.grid(column=0, row=1)
 
-        # Buttons
-        self.botao_pesquisar = ttk.Button(self, text="go!")
+        def baixar():
+            link = self.texto_pesquisa.get()
+            print(link)
+            youtube_func = YouTubeToMp3(
+                link=link, path='/home/bruno-lyra/Music/')
+            youtube_func.baixando()
+            youtube_func.converte()
+
+            # Buttons
+        self.botao_pesquisar = ttk.Button(
+            self, text="Baixar", command=baixar)
         self.botao_pesquisar.grid(column=0, row=2, padx=10, pady=10)
 
         # TODO: salvar o link no banco de dados
@@ -140,7 +153,8 @@ class Tela_musicas_salvas(tk.Frame):
         tk.Frame.__init__(self, parent)
 
         # Título
-        label = ttk.Label(self, text="Todos os links salvos", font=LARGEFONT)
+        label = ttk.Label(self, text="Todos os links salvos",
+                          font=LARGEFONT, justify="center")
         label.grid(row=0, column=0, padx=10, pady=10)
 
         # TODO: adicionar tabelas com os links e o nome da música salva
