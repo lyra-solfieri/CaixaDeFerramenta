@@ -37,3 +37,6 @@ class YouTubeToMp3():
                 new_file = mp.AudioFileClip(mp4_path)
                 new_file.write_audiofile(mp3_path)
                 os.remove(mp4_path)
+
+    def titulo_musica(self):
+        pass

@@ -1,7 +1,6 @@
 from config_youtube import YouTubeToMp3
-from urllib.request import urlopen
 import tkinter as tk
-from tkinter import Label, StringVar, ttk
+from tkinter import Label, StringVar, ttk, messagebox
 LARGEFONT = ("Verdana", 35)
 
 
@@ -108,11 +107,13 @@ class Tela_baixar_musicas(tk.Frame):
 
         def baixar():
             link = self.texto_pesquisa.get()
-            print(link)
+
             youtube_func = YouTubeToMp3(
                 link=link, path='/home/bruno-lyra/Music/')
             youtube_func.baixando()
             youtube_func.converte()
+            messagebox.showinfo(
+                "Download", "Concluído e salvo em formato mp3 com sucesso")
 
             # Buttons
         self.botao_pesquisar = ttk.Button(
@@ -127,8 +128,8 @@ class Tela_baixar_musicas(tk.Frame):
                                      command=lambda: controller.show_frame(Tela_inicial))
         self.botao_back.grid(column=0, row=4, padx=10, pady=10)
 
-        # Barra de progresso
-        self.progressbar = ttk.Progressbar(self)
+        # TODO:Barra de progresso
+        self.progressbar = ttk.Progressbar(self, mode='determinate')
         self.progressbar.grid(column=0, row=5)
         if (self.progressbar == True):
             self.i = Label(self, text="baixando...")
