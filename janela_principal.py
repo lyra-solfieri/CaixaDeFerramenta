@@ -1,4 +1,6 @@
+from datetime import date
 from config_youtube import YouTubeToMp3
+import config_banco_de_dados
 import tkinter as tk
 from tkinter import Label, StringVar, ttk, messagebox
 LARGEFONT = ("Verdana", 35)
@@ -120,8 +122,16 @@ class Tela_baixar_musicas(tk.Frame):
             self, text="Baixar", command=baixar)
         self.botao_pesquisar.grid(column=0, row=2, padx=10, pady=10)
 
-        # TODO: salvar o link no banco de dados
-        self.botao_baixar = ttk.Button(self, text="Salvar link")
+        def salvar():
+            # TODO: pegar o titulo com um web scraper
+            link = self.texto_pesquisa.get()
+            titulo = 'test'
+            today = date.today()
+            config_banco_de_dados.salvar_link(
+                link=link, titulo=titulo, date=today)
+
+        self.botao_baixar = ttk.Button(
+            self, text="Salvar link", command=salvar)
         self.botao_baixar.grid(column=0, row=3, padx=10, pady=10)
 
         self.botao_back = ttk.Button(self, text="Voltar",
