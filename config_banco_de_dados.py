@@ -1,5 +1,7 @@
 import sqlite3
 
+db_file = 'links_salvos.db'
+
 
 def create_connection(db_file):
     """ create a database connection to the SQLite database
@@ -35,7 +37,7 @@ def main():
     db_file = 'links_salvos.db'
 
     sql = """CREATE TABLE IF NOT EXISTS link_titulo (
-	id integer PRIMARY KEY,
+	id integer PRIMARY KEY AUTOINCREMENT,
 	link text NOT NULL,
 	titulo text  NOT NULL,
 	date text
@@ -53,5 +55,27 @@ def main():
         print("Error! cannot create the database connection.")
 
 
-def salvar_link(args):
-    pass
+"""executando o main para criar a tabela se não existir
+if __name__ == '__main__':
+    main()"""
+
+
+def salvar_link(link, titulo, date):
+    sql_insert = """INSERT INTO link_titulo(link,titulo,date) VALUES(?,?,?)"""
+
+    try:
+        conn = create_connection(db_file=db_file)
+        c = conn.cursor()
+        c.execute(sql_insert, (link, titulo, date))
+        conn.commit()
+    except sqlite3.Error as e:
+        print(e)
+
+
+def links_salvos(self):
+    sql_select = """
+    SELECT * FROM link_titulo"""
+    try:
+        pass
+    except sqlite3.Error as e:
+        print(e)
