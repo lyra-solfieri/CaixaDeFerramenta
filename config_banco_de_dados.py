@@ -1,5 +1,6 @@
 import sqlite3
 
+
 db_file = 'links_salvos.db'
 
 
@@ -55,7 +56,7 @@ def main():
         print("Error! cannot create the database connection.")
 
 
-"""executando o main para criar a tabela se não existir
+"""executar o main para criar a tabela se não existir
 if __name__ == '__main__':
     main()"""
 
@@ -72,10 +73,23 @@ def salvar_link(link, titulo, date):
         print(e)
 
 
-def links_salvos(self):
-    sql_select = """
-    SELECT * FROM link_titulo"""
+"""TODO: adicionar função para acessar dados salvos no banco de dados 
+def links_salvos():
+    sql_select = "SELECT * FROM link_titulo LIMIT 0, 11"
     try:
-        pass
+        conn = create_connection(db_file=db_file)
+        c = conn.cursor()
+        c.execute(sql_select)
+        i = 0
+        print(c)
+        
+       for links in c:
+            for j in range(len(links)):
+                e = Entry(width=10, fg='blue')
+                e.pack(fill=BOTH, expand=True)
+                e.insert(links[j])
+            i = i+1
+        
     except sqlite3.Error as e:
         print(e)
+    """

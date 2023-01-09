@@ -129,6 +129,8 @@ class Tela_baixar_musicas(tk.Frame):
             today = date.today()
             config_banco_de_dados.salvar_link(
                 link=link, titulo=titulo, date=today)
+            messagebox.showinfo(
+                "Dados", "Salvo informações no banco")
 
         self.botao_baixar = ttk.Button(
             self, text="Salvar link", command=salvar)
@@ -169,6 +171,7 @@ class Tela_musicas_salvas(tk.Frame):
         label.grid(row=0, column=0, padx=10, pady=10)
 
         # TODO: adicionar tabelas com os links e o nome da música salva
+        # config_banco_de_dados.links_salvos()
 
         # Buttons
         self.botao_back = ttk.Button(self, text="Come back",
