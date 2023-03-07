@@ -1,4 +1,5 @@
 
+import os
 import pyttsx3
 import PyPDF2
 
@@ -19,16 +20,15 @@ class PdfToMp3:
 
     def extrair_texto(self):
         with open(self.pdf, 'rb') as pdf_file:
-            pdf_reader = PyPDF2.PdfFileReader(pdf_file)
+            pdf_reader = PyPDF2.PdfReader(pdf_file)
 
             # variavel para armazenar o texto do pdf
             text = ''
 
             # loop em cada pagina do pdf
-            for page_num in range(pdf_reader.numPages):
-                page = pdf_reader.getPage(page_num)
-                text += page.extractText()
-                engine = pyttsx3.init()
+            for page_num in range(len(pdf_reader.pages)):
+                page = pdf_reader.pages[page_num]
+                text += page.extract_text()
 
             engine = pyttsx3.init()
 
@@ -36,8 +36,8 @@ class PdfToMp3:
             engine.say(text)
 
             # Save the audio in MP3 format
-            # TODO:adicionar diretorio: path
-            engine.save_to_file(text, 'output.mp3')
+            output_file = os.path.join(self.path, 'output.mp3')
+            engine.save_to_file(text, output_file)
 
             # Run the pyttsx3 engine
             engine.runAndWait()
