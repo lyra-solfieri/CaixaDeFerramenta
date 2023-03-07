@@ -6,7 +6,7 @@ O projeto Caixa de Ferramenta é uma coleção de várias ferramentas Python út
 
 * Conversor PDF para MP3: uma ferramenta que permite converter arquivos PDF em arquivos de áudio MP3, tornando mais fácil para os usuários ouvir documentos   PDF em movimento.
 
-* Download de vídeos: uma ferramenta que permite fazer o download de vídeos do youtube o link de vídeo fornecido.
+* Download de audio do youtube: uma ferramenta que permite fazer o download de audio dos vídeos do youtube o link de vídeo fornecido.
 
 * Em breve mais ferramentas: adicionando novas ferramentas ao projeto.
 
