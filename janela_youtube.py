@@ -101,10 +101,38 @@ class Tela_musicas_salvas(tk.Frame):
                           font=LARGEFONT, justify="center")
         label.grid(row=0, column=0, padx=10, pady=10)
 
-        # TODO: adicionar tabelas com os links e o nome da música salva
-        # config_banco_de_dados.links_salvos()
+        tree = ttk.Treeview(self)
+        cursor = config_banco_de_dados.get_dados()
+
+        # Define the columns for the Treeview widget
+        tree['columns'] = ('link', 'titulo', 'date')
+
+        # Format the column headings
+        tree.heading('#0', text='ID')
+        tree.column('#0', width=50)
+        tree.heading('link', text='Link')
+        tree.column('link', width=300)
+        tree.heading('titulo', text='Título')
+        tree.column('titulo', width=300)
+        tree.heading('date', text='Data')
+        tree.column('date', width=100)
+
+        # Insert the data into the Treeview widget
+        for row in cursor.fetchall():
+            tree.insert('', 'end', text=row[0],
+                        values=(row[1], row[2], row[3]))
+
+        tree.grid(row=1, column=0, sticky="nsew")
+
+        def delete_button_click():
+            # Get the ID of the selected row from the Treeview widget
+            selected_item = tree.selection()[0]
+            id = tree.item(selected_item)['text']
+
+            # Call the delete_row function to delete the row from the table
+            config_banco_de_dados.delete_row(id)
 
         # Buttons
-        self.botao_back = ttk.Button(self, text="Come back",
-                                     command='')
+        self.botao_back = ttk.Button(self, text="Deletar link",
+                                     command=delete_button_click)
         self.botao_back.grid(column=0, row=4, padx=10, pady=10)
