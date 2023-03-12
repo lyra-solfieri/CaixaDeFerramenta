@@ -65,3 +65,7 @@ class Tela_pdf_to_audio(tk.Frame):
         self.botao_pesquisar = ttk.Button(
             self, text="Converter", command=converter)
         self.botao_pesquisar.grid(column=0, row=6, padx=10, pady=10)
+
+        self.botao_back = ttk.Button(
+            self, text='voltar', command='')
+        self.botao_back.grid(column=0, row=7)

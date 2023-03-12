@@ -2,6 +2,7 @@
 
 from tkinter import ttk
 import tkinter as tk
+from janela_extrair_tabela_pdf import Tela_pdf_to_table
 from janela_youtube import Tela_baixar_musicas, Tela_musicas_salvas
 from janela_pdf import Tela_pdf_to_audio
 
@@ -30,7 +31,7 @@ class tkinterApp(tk.Tk):
 
         self.frames = {}
 
-        for F in (Tela_inicial, Tela_baixar_musicas, Tela_musicas_salvas, Tela_pdf_to_audio):
+        for F in (Tela_inicial, Tela_baixar_musicas, Tela_musicas_salvas, Tela_pdf_to_audio, Tela_pdf_to_table):
 
             frame = F(container, self)
 
@@ -62,21 +63,31 @@ class Tela_inicial(tk.Frame):
             controller (_type_): _description_
         """
         tk.Frame.__init__(self, parent)
+        style = ttk.Style()
+
+        style.configure("Custom.TButton", font=("Helvetica", 14), foreground="black", background="#007acc",
+                        padding=10, borderwidth=0, width=20, height=3)
+        style.configure("Custom.TLabel", foreground="#007acc",
+                        background="#f0f0f0", font=("Courier", 22, "bold"))
 
         # usando o Label para exibir um texto
-        self.texto_informativo = ttk.Label(self,
-                                           text="Utilidades Python3",
-                                           font=("Courier 22 bold"), justify="center")
-        self.texto_informativo.grid(column=0, row=0)
+        self.texto_informativo = ttk.Label(
+            self, text="Utilidades Python3", style="Custom.TLabel", justify="center")
+        self.texto_informativo.grid(
+            column=0, row=0, sticky="nsew", padx=10, pady=10)
 
-        self.botao_procurar = ttk.Button(self, text="Procurar Músicas",
-                                         command=lambda: controller.show_frame(Tela_baixar_musicas))
+        self.botao_procurar = ttk.Button(self, text="Baixar audio do youtube",
+                                         command=lambda: controller.show_frame(Tela_baixar_musicas), style="Custom.TButton")
         self.botao_procurar.grid(column=0, row=1, padx=10, pady=10)
 
-        self.botao_musicas_salvas = ttk.Button(self, text="Links Salvos",
-                                               command=lambda: controller.show_frame(Tela_musicas_salvas))
+        self.botao_musicas_salvas = ttk.Button(self, text="Outra funcionalidade",
+                                               command='lambda: controller.show_frame(Tela_musicas_salvas)', style="Custom.TButton")
         self.botao_musicas_salvas.grid(column=0, row=2, padx=10, pady=10)
 
-        self.botao_musicas_salvas = ttk.Button(self, text="Pdf para Mp3",
-                                               command=lambda: controller.show_frame(Tela_pdf_to_audio))
-        self.botao_musicas_salvas.grid(column=0, row=3, padx=10, pady=10)
+        self.botao_pdf = ttk.Button(self, text="Pdf para Mp3",
+                                               command=lambda: controller.show_frame(Tela_pdf_to_audio), style="Custom.TButton")
+        self.botao_pdf.grid(column=0, row=3, padx=10, pady=10)
+
+        self.tables_pdf = ttk.Button(
+            self, text='Extrair Tabelas de Pdf', command=lambda: controller.show_frame(Tela_pdf_to_table), style="Custom.TButton")
+        self.tables_pdf.grid(column=0, row=4, padx=10, pady=10)
