@@ -8,6 +8,8 @@ O projeto Caixa de Ferramenta é uma coleção de várias ferramentas Python út
 
 * Download de audio do youtube: uma ferramenta que permite fazer o download de audio dos vídeos do youtube o link de vídeo fornecido.
 
+* Extrair tabela de Pdf: Ferramenta permite extrair tabelas e salvar nos formatos Csv,Json e Excel
+
 * Em breve mais ferramentas: adicionando novas ferramentas ao projeto.
 
 ## Requisitos
