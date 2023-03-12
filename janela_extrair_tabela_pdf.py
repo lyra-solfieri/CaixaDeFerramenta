@@ -23,16 +23,22 @@ class Tela_pdf_to_table(tk.Frame):
             self, text="Selecione o Pdf para a extração das tabelas", font=LARGEFONT, justify="center")
         label.grid(row=0, column=0, padx=10, pady=10)
 
-        def pdf_file(args):
-            pass
+        # selecionar pdf
+
+        def select_file():
+            self.pdf_path = filedialog.askopenfilename()
+            label2 = ttk.Label(self, text=f'Pdf selecionado: {self.pdf_path}')
+            label2.grid(column=0, row=3)
+            print(self.pdf_path)
 
         button_pdf = ttk.Button(
-            self, text='Selecione o pdf', command='', style="Custom.TButton")
+            self, text='Selecione o pdf', command=select_file, style="Custom.TButton")
         button_pdf.grid(row=2, column=0, padx=10, pady=10)
 
         # caixa de pesquisa
-        link = StringVar()
-        self.texto_pesquisa = ttk.Entry(self, width=20, textvariable=link)
+        self.pages = StringVar()
+        self.texto_pesquisa = ttk.Entry(
+            self, width=20, textvariable=self.pages)
         self.texto_pesquisa.focus_set()
         self.texto_pesquisa.grid(column=0, row=4)
 
@@ -40,11 +46,28 @@ class Tela_pdf_to_table(tk.Frame):
             self, text="Número da página para extração da tabela Ex: 3-10 ou 3", font=('Verdana', 9), justify="center")
         label.grid(row=5, column=0, padx=15, pady=10)
 
-        # List Box
-        items = ["Csv", "Json", "Excel"]
-        # create the Listbox widget
-        listbox = tk.Listbox(self, height=3)
-        # insert the items into the Listbox
-        for item in items:
-            listbox.insert(tk.END, item)
-        listbox.grid(row=6, column=0)
+        options = ["Csv", "Json", "Excel"]
+
+        # create a Combobox widget
+        self.drop_text = ttk.Combobox(self, values=options)
+        self.drop_text.grid(row=6, column=0)
+
+        def get_selected_value():
+            # get the selected value
+            selected_value = self.drop_text.get()
+            print("Selected value:", selected_value)
+            pdf_extractor = PDFTableExtractor(
+                pdf_path=self.pdf_path, pages=self.pages.get())
+            pdf_extractor.extract_table()
+            if selected_value == 'Json':
+                pdf_extractor.to_json('tabela.json')
+            elif selected_value == 'Csv':
+                pdf_extractor.to_csv('tabela.csv')
+            elif selected_value == 'Excel':
+                pdf_extractor.to_excel('tabela.excel')
+            else:
+                raise NameError('Nome incorreto')
+
+        button_concluir = ttk.Button(
+            self, text='Extrair', command=get_selected_value, style="Custom.TButton")
+        button_concluir.grid(row=7, column=0, padx=10, pady=10)

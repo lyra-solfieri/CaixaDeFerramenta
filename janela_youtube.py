@@ -1,6 +1,6 @@
 
 import tkinter as tk
-from tkinter import Label, StringVar, ttk, messagebox
+from tkinter import Label, StringVar, ttk, messagebox, filedialog
 from datetime import date
 from config_youtube import YouTubeToMp3
 import config_banco_de_dados
@@ -9,12 +9,6 @@ LARGEFONT = ("Verdana", 35)
 
 
 class Tela_baixar_musicas(tk.Frame):
-    """_summary_
-
-    Args:
-        tk (_type_): _description_
-
-    """
 
     def __init__(self, parent, controller):
         """_summary_
@@ -25,8 +19,6 @@ class Tela_baixar_musicas(tk.Frame):
         """
         tk.Frame.__init__(self, parent)
 
-        # definindo o titulo da janela
-        # self.title("Download")
         label = ttk.Label(
             self, text="Cole o link do youtube", font=LARGEFONT, justify="center")
         label.grid(row=0, column=0, padx=10, pady=10)
@@ -40,9 +32,12 @@ class Tela_baixar_musicas(tk.Frame):
 
         def baixar():
             link = self.texto_pesquisa.get()
-
+            directory_path = filedialog.askdirectory()
+            label3 = ttk.Label(
+                self, text=f'Diretório de Destino: {directory_path}')
+            label3.grid(column=0, row=6)
             youtube_func = YouTubeToMp3(
-                link=link, path='/home/bruno-lyra/Music/')
+                link=link, path=directory_path)
             youtube_func.baixando()
             youtube_func.converte()
             messagebox.showinfo(
@@ -67,8 +62,8 @@ class Tela_baixar_musicas(tk.Frame):
             self, text="Salvar link", command=salvar)
         self.botao_baixar.grid(column=0, row=3, padx=10, pady=10)
 
-        self.botao_back = ttk.Button(self, text="Voltar",
-                                     command='')
+        self.botao_back = ttk.Button(self, text="Links Baixados",
+                                     command=lambda: controller.show_frame(Tela_musicas_salvas))
         self.botao_back.grid(column=0, row=4, padx=10, pady=10)
 
         # TODO:Barra de progresso
@@ -133,6 +128,6 @@ class Tela_musicas_salvas(tk.Frame):
             config_banco_de_dados.delete_row(id)
 
         # Buttons
-        self.botao_back = ttk.Button(self, text="Deletar link",
-                                     command=delete_button_click)
+        self.botao_back = ttk.Button(self, text="voltar",
+                                     command=lambda: controller.show_frame(Tela_baixar_musicas))
         self.botao_back.grid(column=0, row=4, padx=10, pady=10)
