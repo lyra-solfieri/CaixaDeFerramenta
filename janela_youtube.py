@@ -2,6 +2,8 @@
 import tkinter as tk
 from tkinter import Label, StringVar, ttk, messagebox, filedialog
 from datetime import date
+import requests
+from bs4 import BeautifulSoup
 from config_youtube import YouTubeToMp3
 import config_banco_de_dados
 
@@ -11,12 +13,7 @@ LARGEFONT = ("Verdana", 35)
 class Tela_baixar_musicas(tk.Frame):
 
     def __init__(self, parent, controller):
-        """_summary_
 
-        Args:
-            parent (_type_): _description_
-            controller (_type_): _description_
-        """
         tk.Frame.__init__(self, parent)
 
         label = ttk.Label(
@@ -49,12 +46,16 @@ class Tela_baixar_musicas(tk.Frame):
         self.botao_pesquisar.grid(column=0, row=2, padx=10, pady=10)
 
         def salvar():
-            # TODO: pegar o titulo com um web scraper
             link = self.texto_pesquisa.get()
-            titulo = 'test'
+            response = requests.get(link)
+            content = response.content
+            soup = BeautifulSoup(content, 'html.parser')
+            # my_div = soup.find('div', {'id': 'title'})
+            title = soup.find('title').text
+            print(title)
             today = date.today()
             config_banco_de_dados.salvar_link(
-                link=link, titulo=titulo, date=today)
+                link=link, titulo=title, date=today)
             messagebox.showinfo(
                 "Dados", "Salvo informações no banco")
 

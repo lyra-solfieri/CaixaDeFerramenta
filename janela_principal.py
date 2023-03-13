@@ -19,9 +19,21 @@ class tkinterApp(tk.Tk):
     """
 
     def __init__(self, *args, **kwargs):
-
         tk.Tk.__init__(self, *args, **kwargs)
-        self.geometry('550x450+500+500')
+
+        window_width = 600
+        window_height = 500
+
+        # Get the screen width and height
+        screen_width = self.winfo_screenwidth()
+        screen_height = self.winfo_screenheight()
+
+        # Calculate the x and y coordinates to center the window
+        x = (screen_width/2) - (window_width/2)
+        y = (screen_height/2) - (window_height/2)
+
+        # Set the position and size of the window
+        self.geometry('%dx%d+%d+%d' % (window_width, window_height, x, y))
 
         container = tk.Frame(self)
         container.pack(side="top", fill="both", expand=True)
@@ -51,17 +63,10 @@ class Tela_inicial(tk.Frame):
     com os dois botoes das funcionalidades 
     pincipais do sistema
 
-    Args:
-        tk (_type_): passando o tkinter como parametro
     """
 
     def __init__(self, parent, controller):
-        """_summary_
 
-        Args:
-            parent (_type_): _description_
-            controller (_type_): _description_
-        """
         tk.Frame.__init__(self, parent)
         style = ttk.Style()
 
@@ -78,16 +83,27 @@ class Tela_inicial(tk.Frame):
 
         self.botao_procurar = ttk.Button(self, text="Baixar audio do youtube",
                                          command=lambda: controller.show_frame(Tela_baixar_musicas), style="Custom.TButton")
-        self.botao_procurar.grid(column=0, row=1, padx=10, pady=10)
+        self.botao_procurar.grid(
+            column=0, row=1, padx=10, sticky="nsew", pady=10)
 
         self.botao_musicas_salvas = ttk.Button(self, text="Outra funcionalidade",
                                                command='lambda: controller.show_frame(Tela_musicas_salvas)', style="Custom.TButton")
-        self.botao_musicas_salvas.grid(column=0, row=2, padx=10, pady=10)
+        self.botao_musicas_salvas.grid(
+            column=0, row=2, padx=10, pady=10, sticky='nsew')
 
         self.botao_pdf = ttk.Button(self, text="Pdf para Mp3",
                                                command=lambda: controller.show_frame(Tela_pdf_to_audio), style="Custom.TButton")
-        self.botao_pdf.grid(column=0, row=3, padx=10, pady=10)
+        self.botao_pdf.grid(column=0, row=3, padx=10, pady=10, sticky='nsew')
 
         self.tables_pdf = ttk.Button(
             self, text='Extrair Tabelas de Pdf', command=lambda: controller.show_frame(Tela_pdf_to_table), style="Custom.TButton")
-        self.tables_pdf.grid(column=0, row=4, padx=10, pady=10)
+        self.tables_pdf.grid(column=0, row=4, padx=10, pady=10, sticky='nsew')
+
+        # Center the label and buttons in the frame
+        self.grid_rowconfigure(0, weight=1)
+        self.grid_columnconfigure(0, weight=1)
+        self.texto_informativo.grid_configure(sticky="nsew")
+        self.botao_procurar.grid_configure(sticky="nsew")
+        self.botao_musicas_salvas.grid_configure(sticky="nsew")
+        self.botao_pdf.grid_configure(sticky="nsew")
+        self.tables_pdf.grid_configure(sticky="nsew")
