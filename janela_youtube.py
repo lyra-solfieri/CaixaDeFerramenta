@@ -46,18 +46,27 @@ class Tela_baixar_musicas(tk.Frame):
         self.botao_pesquisar.grid(column=0, row=2, padx=10, pady=10)
 
         def salvar():
-            link = self.texto_pesquisa.get()
-            response = requests.get(link)
-            content = response.content
-            soup = BeautifulSoup(content, 'html.parser')
-            # my_div = soup.find('div', {'id': 'title'})
-            title = soup.find('title').text
-            print(title)
-            today = date.today()
-            config_banco_de_dados.salvar_link(
-                link=link, titulo=title, date=today)
-            messagebox.showinfo(
-                "Dados", "Salvo informações no banco")
+            try:
+                link = self.texto_pesquisa.get()
+                response = requests.get(link)
+                content = response.content
+                soup = BeautifulSoup(content, 'html.parser')
+                title = soup.find('title').text
+                today = date.today()
+                config_banco_de_dados.salvar_link(
+                    link=link, titulo=title, date=today)
+                messagebox.showinfo(
+                    "Dados", "Salvo informações no banco")
+
+            except requests.exceptions.RequestException as e:
+                print(f"Except Request: {e}")
+                messagebox.showinfo(
+                    "Error", "Erro de Conexão")
+            finally:
+                try:
+                    config_banco_de_dados.fechar_conexao()
+                except Exception as e:
+                    print(f"Error closing database connection: {e}")
 
         self.botao_baixar = ttk.Button(
             self, text="Salvar link", command=salvar)
