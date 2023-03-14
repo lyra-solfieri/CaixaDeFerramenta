@@ -68,6 +68,12 @@ def salvar_link(link, titulo, date):
         print(e)
 
 
+def fechar_conexao():
+    conn = create_connection(db_file=db_file)
+    c = conn.cursor()
+    c.close()
+
+
 def get_dados():
     conn = create_connection(db_file=db_file)
     c = conn.cursor()
