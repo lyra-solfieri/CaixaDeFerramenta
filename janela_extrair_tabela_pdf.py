@@ -1,12 +1,14 @@
 from tkinter import Label, StringVar, ttk, messagebox, filedialog
 import tkinter as tk
 from config_extract_tables_from_pdf import PDFTableExtractor
+from janela_principal import Tela_inicial
 LARGEFONT = ("Verdana", 35)
 
 
 class Tela_pdf_to_table(tk.Frame):
 
     def __init__(self, parent, controller):
+        self.controller = controller
 
         self.pdf_path = ''
         self.pages = ''
@@ -71,3 +73,10 @@ class Tela_pdf_to_table(tk.Frame):
         button_concluir = ttk.Button(
             self, text='Extrair', command=get_selected_value, style="Custom.TButton")
         button_concluir.grid(row=7, column=0, padx=10, pady=10)
+
+        def return_to_main_menu():
+            self.controller.show_frame(Tela_inicial)
+
+        self.return_button = tk.Button(
+            self, text='come back', command=return_to_main_menu)
+        self.return_button.grid(column=0, row=8)
