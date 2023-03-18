@@ -6,6 +6,7 @@ import requests
 from bs4 import BeautifulSoup
 from config_youtube import YouTubeToMp3
 import config_banco_de_dados
+from janela_principal import Tela_inicial
 
 LARGEFONT = ("Verdana", 35)
 
@@ -15,6 +16,7 @@ class Tela_baixar_musicas(tk.Frame):
     def __init__(self, parent, controller):
 
         tk.Frame.__init__(self, parent)
+        self.controller = controller
 
         label = ttk.Label(
             self, text="Cole o link do youtube", font=LARGEFONT, justify="center")
@@ -76,6 +78,13 @@ class Tela_baixar_musicas(tk.Frame):
                                      command=lambda: controller.show_frame(Tela_musicas_salvas))
         self.botao_back.grid(column=0, row=4, padx=10, pady=10)
 
+        def return_to_main_menu():
+            self.controller.show_frame(Tela_inicial)
+
+        self.return_button = tk.Button(
+            self, text='come back', command=return_to_main_menu)
+        self.return_button.grid(column=0, row=6)
+
         # TODO:Barra de progresso
         self.progressbar = ttk.Progressbar(self, mode='determinate')
         self.progressbar.grid(column=0, row=5)
@@ -88,17 +97,11 @@ class Tela_musicas_salvas(tk.Frame):
     """Todos os links salvos com o nome da musica
     referente ao link
 
-    Args:
-        tk (_type_): _description_
+
     """
 
     def __init__(self, parent, controller):
-        """_summary_
 
-        Args:
-            parent (_type_): _description_
-            controller (_type_): _description_
-        """
         tk.Frame.__init__(self, parent)
 
         # Título

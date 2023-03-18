@@ -3,28 +3,17 @@
 from tkinter import Label, StringVar, ttk, messagebox, filedialog
 import tkinter as tk
 from config_pdf import PdfToMp3
+from janela_principal import Tela_inicial
 LARGEFONT = ("Verdana", 35)
 
 
 class Tela_pdf_to_audio(tk.Frame):
-    """_summary_
-
-    Args:
-        tk (_type_): _description_
-
-    """
 
     def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
 
         self.pdf_path = ''
         self.directory_path = ''
-        """_summary_
-
-        Args:
-            parent (_type_): _description_
-            controller (_type_): _description_
-        """
-        tk.Frame.__init__(self, parent)
 
         # definindo o titulo da janela
         label = ttk.Label(
@@ -66,6 +55,9 @@ class Tela_pdf_to_audio(tk.Frame):
             self, text="Converter", command=converter)
         self.botao_pesquisar.grid(column=0, row=6, padx=10, pady=10)
 
+        def go_back():
+            controller.show_frame(Tela_inicial)
+
         self.botao_back = ttk.Button(
-            self, text='voltar', command='')
+            self, text='voltar', command=go_back)
         self.botao_back.grid(column=0, row=7)

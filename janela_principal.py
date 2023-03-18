@@ -1,22 +1,12 @@
 
-
 from tkinter import ttk
 import tkinter as tk
-from janela_extrair_tabela_pdf import Tela_pdf_to_table
-from janela_youtube import Tela_baixar_musicas, Tela_musicas_salvas
-from janela_pdf import Tela_pdf_to_audio
 
 
 LARGEFONT = ("Verdana", 35)
 
 
 class tkinterApp(tk.Tk):
-    """classe responsavel por criar os frame
-        inicializa toda a aplicação
-
-    Args:
-        tk (_type_): tkinter
-    """
 
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
@@ -35,17 +25,23 @@ class tkinterApp(tk.Tk):
         # Set the position and size of the window
         self.geometry('%dx%d+%d+%d' % (window_width, window_height, x, y))
 
-        container = tk.Frame(self)
-        container.pack(side="top", fill="both", expand=True)
+        self.title('Caixa de Ferramenta')
 
-        container.grid_rowconfigure(0, weight=1)
-        container.grid_columnconfigure(0, weight=1)
+        self.container = tk.Frame(self)
+        self.container.pack(side="top", fill="both", expand=True)
+
+        self.container.grid_rowconfigure(0, weight=1)
+        self.container.grid_columnconfigure(0, weight=1)
+
+        # Frames/Telas
+        from janela_extrair_tabela_pdf import Tela_pdf_to_table
+        from janela_youtube import Tela_baixar_musicas, Tela_musicas_salvas
+        from janela_pdf import Tela_pdf_to_audio
 
         self.frames = {}
-
         for F in (Tela_inicial, Tela_baixar_musicas, Tela_musicas_salvas, Tela_pdf_to_audio, Tela_pdf_to_table):
 
-            frame = F(container, self)
+            frame = F(self.container, self)
 
             self.frames[F] = frame
 
@@ -54,6 +50,10 @@ class tkinterApp(tk.Tk):
         self.show_frame(Tela_inicial)
 
     def show_frame(self, cont):
+        if cont not in self.frames:
+            self.frames[cont] = Tela_inicial(self, self.container)
+            self.frames[cont].pack(side="top", fill="both", expand=True)
+
         frame = self.frames[cont]
         frame.tkraise()
 
@@ -66,8 +66,12 @@ class Tela_inicial(tk.Frame):
     """
 
     def __init__(self, parent, controller):
+        from janela_extrair_tabela_pdf import Tela_pdf_to_table
+        from janela_youtube import Tela_baixar_musicas
+        from janela_pdf import Tela_pdf_to_audio
 
         tk.Frame.__init__(self, parent)
+        self.controller = controller
         style = ttk.Style()
 
         style.configure("Custom.TButton", font=("Helvetica", 14), foreground="black", background="#007acc",
